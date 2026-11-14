@@ -1,6 +1,6 @@
-# PackRat 🐀
-
-> Hoards everything you give it. Just not on your disk.
+<h1 align="center">
+  <img src="docs/logo.svg" alt="PackRat: hoards everything, just not on your disk" width="600">
+</h1>
 
 PackRat is a systemd service for Fedora that watches one or more
 directories and **moves** everything in them to Amazon S3 (or any
