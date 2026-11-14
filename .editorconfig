@@ -1,0 +1,185 @@
+# Mirrors PackRat.slnx.DotSettings so that `dotnet build` (and editors
+# other than Rider) enforce the same style. Keep the two files in sync.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+tab_width = 2
+
+[*.{xml,csproj,props,targets,slnx,DotSettings}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.cs]
+max_line_length = 80
+
+# --- Types: explicit, never var (DotSettings: UseExplicitType = WARNING) ---
+csharp_style_var_for_built_in_types = false:warning
+csharp_style_var_when_type_is_apparent = false:warning
+csharp_style_var_elsewhere = false:warning
+dotnet_diagnostic.IDE0008.severity = warning
+
+# --- Braces: always required, K&R placement ---
+csharp_prefer_braces = true:warning
+dotnet_diagnostic.IDE0011.severity = warning
+csharp_new_line_before_open_brace = none
+csharp_new_line_before_else = false
+csharp_new_line_before_catch = false
+csharp_new_line_before_finally = false
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_preserve_single_line_statements = false
+csharp_preserve_single_line_blocks = true
+
+# --- Naming (IDE1006) ---
+dotnet_diagnostic.IDE1006.severity = warning
+
+# Styles
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+
+dotnet_naming_style.interface_style.capitalization = pascal_case
+dotnet_naming_style.interface_style.required_prefix = I
+
+dotnet_naming_style.type_parameter_style.capitalization = pascal_case
+dotnet_naming_style.type_parameter_style.required_prefix = T
+
+dotnet_naming_style.lower_snake.capitalization = all_lower
+dotnet_naming_style.lower_snake.word_separator = _
+
+dotnet_naming_style.lower_snake_trailing.capitalization = all_lower
+dotnet_naming_style.lower_snake_trailing.word_separator = _
+dotnet_naming_style.lower_snake_trailing.required_suffix = _
+
+dotnet_naming_style.s_lower_snake_trailing.capitalization = all_lower
+dotnet_naming_style.s_lower_snake_trailing.word_separator = _
+dotnet_naming_style.s_lower_snake_trailing.required_prefix = s_
+dotnet_naming_style.s_lower_snake_trailing.required_suffix = _
+
+dotnet_naming_style.upper_snake.capitalization = all_upper
+dotnet_naming_style.upper_snake.word_separator = _
+
+dotnet_naming_style.c_upper_snake.capitalization = all_upper
+dotnet_naming_style.c_upper_snake.word_separator = _
+dotnet_naming_style.c_upper_snake.required_prefix = C_
+
+dotnet_naming_style.c_upper_snake_trailing.capitalization = all_upper
+dotnet_naming_style.c_upper_snake_trailing.word_separator = _
+dotnet_naming_style.c_upper_snake_trailing.required_prefix = C_
+dotnet_naming_style.c_upper_snake_trailing.required_suffix = _
+
+dotnet_naming_style.s_upper_snake.capitalization = all_upper
+dotnet_naming_style.s_upper_snake.word_separator = _
+dotnet_naming_style.s_upper_snake.required_prefix = S_
+
+dotnet_naming_style.s_upper_snake_trailing.capitalization = all_upper
+dotnet_naming_style.s_upper_snake_trailing.word_separator = _
+dotnet_naming_style.s_upper_snake_trailing.required_prefix = S_
+dotnet_naming_style.s_upper_snake_trailing.required_suffix = _
+
+# Symbols
+dotnet_naming_symbols.private_constants.applicable_kinds = field
+dotnet_naming_symbols.private_constants.applicable_accessibilities = private
+dotnet_naming_symbols.private_constants.required_modifiers = const
+
+dotnet_naming_symbols.constants.applicable_kinds = field
+dotnet_naming_symbols.constants.applicable_accessibilities = public, internal, protected, protected_internal, private_protected
+dotnet_naming_symbols.constants.required_modifiers = const
+
+dotnet_naming_symbols.private_static_readonly_fields.applicable_kinds = field
+dotnet_naming_symbols.private_static_readonly_fields.applicable_accessibilities = private
+dotnet_naming_symbols.private_static_readonly_fields.required_modifiers = static, readonly
+
+dotnet_naming_symbols.static_readonly_fields.applicable_kinds = field
+dotnet_naming_symbols.static_readonly_fields.applicable_accessibilities = public, internal, protected, protected_internal, private_protected
+dotnet_naming_symbols.static_readonly_fields.required_modifiers = static, readonly
+
+dotnet_naming_symbols.private_static_fields.applicable_kinds = field
+dotnet_naming_symbols.private_static_fields.applicable_accessibilities = private
+dotnet_naming_symbols.private_static_fields.required_modifiers = static
+
+dotnet_naming_symbols.static_fields.applicable_kinds = field
+dotnet_naming_symbols.static_fields.applicable_accessibilities = public, internal, protected, protected_internal, private_protected
+dotnet_naming_symbols.static_fields.required_modifiers = static
+
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+dotnet_naming_symbols.fields.applicable_kinds = field
+dotnet_naming_symbols.fields.applicable_accessibilities = public, internal, protected, protected_internal, private_protected
+
+dotnet_naming_symbols.local_constants.applicable_kinds = local
+dotnet_naming_symbols.local_constants.required_modifiers = const
+
+dotnet_naming_symbols.locals.applicable_kinds = local
+
+dotnet_naming_symbols.parameters.applicable_kinds = parameter
+
+dotnet_naming_symbols.interfaces.applicable_kinds = interface
+
+dotnet_naming_symbols.type_parameters.applicable_kinds = type_parameter
+
+dotnet_naming_symbols.pascal_members.applicable_kinds = namespace, class, struct, enum, delegate, method, property, event, local_function
+
+# Rules (most specific first)
+dotnet_naming_rule.private_constants.symbols = private_constants
+dotnet_naming_rule.private_constants.style = c_upper_snake_trailing
+dotnet_naming_rule.private_constants.severity = warning
+
+dotnet_naming_rule.constants.symbols = constants
+dotnet_naming_rule.constants.style = c_upper_snake
+dotnet_naming_rule.constants.severity = warning
+
+dotnet_naming_rule.private_static_readonly_fields.symbols = private_static_readonly_fields
+dotnet_naming_rule.private_static_readonly_fields.style = s_upper_snake_trailing
+dotnet_naming_rule.private_static_readonly_fields.severity = warning
+
+dotnet_naming_rule.static_readonly_fields.symbols = static_readonly_fields
+dotnet_naming_rule.static_readonly_fields.style = s_upper_snake
+dotnet_naming_rule.static_readonly_fields.severity = warning
+
+dotnet_naming_rule.private_static_fields.symbols = private_static_fields
+dotnet_naming_rule.private_static_fields.style = s_lower_snake_trailing
+dotnet_naming_rule.private_static_fields.severity = warning
+
+dotnet_naming_rule.static_fields.symbols = static_fields
+dotnet_naming_rule.static_fields.style = lower_snake
+dotnet_naming_rule.static_fields.severity = warning
+
+dotnet_naming_rule.private_fields.symbols = private_fields
+dotnet_naming_rule.private_fields.style = lower_snake_trailing
+dotnet_naming_rule.private_fields.severity = warning
+
+dotnet_naming_rule.fields.symbols = fields
+dotnet_naming_rule.fields.style = lower_snake
+dotnet_naming_rule.fields.severity = warning
+
+dotnet_naming_rule.local_constants.symbols = local_constants
+dotnet_naming_rule.local_constants.style = upper_snake
+dotnet_naming_rule.local_constants.severity = warning
+
+dotnet_naming_rule.locals.symbols = locals
+dotnet_naming_rule.locals.style = lower_snake
+dotnet_naming_rule.locals.severity = warning
+
+dotnet_naming_rule.parameters.symbols = parameters
+dotnet_naming_rule.parameters.style = lower_snake
+dotnet_naming_rule.parameters.severity = warning
+
+dotnet_naming_rule.interfaces.symbols = interfaces
+dotnet_naming_rule.interfaces.style = interface_style
+dotnet_naming_rule.interfaces.severity = warning
+
+dotnet_naming_rule.type_parameters.symbols = type_parameters
+dotnet_naming_rule.type_parameters.style = type_parameter_style
+dotnet_naming_rule.type_parameters.severity = warning
+
+dotnet_naming_rule.pascal_members.symbols = pascal_members
+dotnet_naming_rule.pascal_members.style = pascal_case
+dotnet_naming_rule.pascal_members.severity = warning

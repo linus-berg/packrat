@@ -1,0 +1,49 @@
+# Runs PackRat as the user named by the instance, so it can read and
+# delete that user's files and use their ~/.aws credentials:
+#
+#   sudo systemctl enable --now packrat@linus.service
+#   journalctl -u packrat@linus -f
+
+[Unit]
+Description=PackRat: move files into S3 (as %i)
+Documentation=https://github.com/linus-berg/packrat
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=notify
+User=%i
+ExecStart=/usr/bin/packrat
+# Proxy and AWS environment; the second file is per instance and optional.
+EnvironmentFile=-/etc/packrat/environment
+EnvironmentFile=-/etc/packrat/%i.environment
+Restart=on-failure
+RestartSec=30s
+# 78 (EX_CONFIG) = invalid config: fix it, then restart the service by hand.
+RestartPreventExitStatus=78
+TimeoutStopSec=60s
+SyslogIdentifier=packrat
+
+# Hardening. The configured directories can live anywhere (including /home)
+# and must stay writable so uploaded files can be deleted, so the file system
+# is left alone; the rest is locked down.
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=full
+ProtectClock=yes
+ProtectHostname=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+LockPersonality=yes
+SystemCallArchitectures=native
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,25 @@
+# Environment for packrat@<user>.service, in systemd EnvironmentFile
+# syntax (KEY=value, no "export"). Read by systemd as root before switching
+# to the service user, so secrets here stay private (mode 0600). Per-user
+# overrides go in /etc/packrat/<user>.environment.
+
+# --- Proxy -------------------------------------------------------------------
+# Without these (or proxy.url in config.json) the service connects directly.
+# no_proxy entries can be host names (subdomains match too), IP addresses or
+# CIDR ranges, e.g. the subnets reached through an IPsec tunnel. A host name
+# that resolves into a CIDR range also bypasses the proxy (see
+# proxy.resolveHostnames in config.json).
+#https_proxy=http://user:password@proxy.example.com:3128
+#http_proxy=http://proxy.example.com:3128
+#no_proxy=localhost,.corp.example.com,10.0.0.0/8
+
+# --- AWS ---------------------------------------------------------------------
+# By default the service user's ~/.aws/config and ~/.aws/credentials are used
+# (aws.profile in config.json picks a profile). Alternatively:
+#AWS_PROFILE=backup
+#AWS_REGION=eu-north-1
+#AWS_ACCESS_KEY_ID=
+#AWS_SECRET_ACCESS_KEY=
+
+# --- Config file -------------------------------------------------------------
+#PACKRAT_CONFIG=/etc/packrat/config.json

@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>PackRat</RootNamespace>
+    <AssemblyName>PackRat</AssemblyName>
+    <Description>Moves files from local directories into S3. Hoards everything you give it, just not on your disk.</Description>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
+    <TieredPGO>true</TieredPGO>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" />
+    <!-- Needed at runtime for assume-role and SSO profiles in ~/.aws/config. -->
+    <PackageReference Include="AWSSDK.SecurityToken" />
+    <PackageReference Include="AWSSDK.SSO" />
+    <PackageReference Include="AWSSDK.SSOOIDC" />
+    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" />
+    <PackageReference Include="System.CommandLine" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="PackRat.Tests" />
+  </ItemGroup>
+
+</Project>

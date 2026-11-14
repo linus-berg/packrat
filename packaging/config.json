@@ -1,0 +1,95 @@
+// PackRat configuration. JSON with comments; keys are case-insensitive.
+// After editing: sudo systemctl restart packrat@<user>
+//
+// Every file below a directory is uploaded to
+//   s3://<bucket>/<prefix>/<path relative to the directory>
+// and, once the upload is verified, deleted locally.
+{
+  // Default bucket for every directory (each one can override it).
+  "bucket": "my-bucket",
+
+  "aws": {
+    // Profile from the service user's ~/.aws/config or ~/.aws/credentials
+    // (SSO and assume-role profiles work). Leave it out to use the default
+    // chain: AWS_PROFILE, AWS_ACCESS_KEY_ID/..., then [default].
+    // "profile": "default",
+    "region": "eu-north-1",
+
+    // S3-compatible storage (MinIO, Ceph, Garage, ...):
+    // "serviceUrl": "https://minio.example.internal:9000",
+    // "forcePathStyle": true,
+
+    "maxRetries": 5,
+    "connectTimeout": "30s",
+    "requestTimeout": "15m",
+
+    // "WhenRequired" for older S3-compatible servers that reject the CRC
+    // checksum headers newer SDKs send.
+    "checksums": "WhenSupported"
+  },
+
+  "proxy": {
+    // false = always connect directly, ignoring the environment.
+    "enabled": true,
+
+    // Defaults to https_proxy / http_proxy / all_proxy from
+    // /etc/packrat/environment. Prefer putting credentials there:
+    // this file is readable by everyone.
+    // "url": "http://proxy.example.com:3128",
+
+    // Added to no_proxy from the environment. Host names match themselves
+    // and all subdomains; IPs and CIDR ranges match addresses.
+    "noProxy": [],
+
+    // Resolve host names and bypass the proxy when an address falls inside
+    // an IP/CIDR entry above, e.g. an S3 endpoint behind an IPsec tunnel.
+    "resolveHostnames": true
+  },
+
+  "sync": {
+    // Full rescan interval. New files are usually noticed sooner via inotify.
+    "scanInterval": "1m",
+
+    // A file is only uploaded once it hasn't changed for this long.
+    "settleTime": "30s",
+
+    "maxConcurrentUploads": 4,
+
+    // false = copy instead of move: keep local files, re-upload on change.
+    "deleteAfterUpload": true,
+
+    // Remove subdirectories that have been empty for settleTime (never the
+    // configured directory itself).
+    "deleteEmptyDirectories": true,
+
+    // HEAD each object after upload and compare its size before deleting
+    // the local file. Needs s3:GetObject.
+    "verifyUploads": true,
+
+    "watch": true,
+
+    // Skip *.part, *.crdownload, *.tmp, *.swp, *~, .~lock.*# and friends.
+    "useDefaultExcludes": true,
+
+    // gitignore-style: "*.log" anywhere, ".git" directories anywhere,
+    // "cache/**" relative to the synced directory.
+    "exclude": []
+
+    // "storageClass": "STANDARD_IA"
+  },
+
+  // Directories to sync. Paths must be absolute or start with ~/ (the
+  // service user's home). Each may set: bucket, prefix, deleteAfterUpload,
+  // storageClass, exclude. Directories may not be nested in each other.
+  "directories": [
+    // { "path": "~/Scans", "prefix": "scans" },
+    // {
+    //   "path": "~/Pictures/Export",
+    //   "bucket": "my-photo-bucket",
+    //   "prefix": "photos/export",
+    //   "storageClass": "STANDARD_IA",
+    //   "exclude": [ "*.xmp" ]
+    // },
+    // { "path": "/srv/archive", "prefix": "archive", "deleteAfterUpload": false }
+  ]
+}

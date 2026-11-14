@@ -1,0 +1,13 @@
+# Holds proxy/AWS secrets; systemd reads it as root before dropping privileges.
+addFilter("non-readable /etc/packrat/environment 600")
+# Self-documenting through --help and the commented /etc config files.
+addFilter("no-manual-page-for-binary packrat")
+# Tests run in CI before packaging.
+addFilter("no-%check-section")
+# The tarball is produced by packaging/build-rpm.sh, not downloaded.
+addFilter("invalid-url Source0")
+# Not in the en_US dictionary.
+addFilter("spelling-error .*systemd")
+# CI snapshot builds use a 0.<run>.git<sha> release; the changelog tracks
+# tagged releases only.
+addFilter("incoherent-version-in-changelog")

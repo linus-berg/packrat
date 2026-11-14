@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      aws-sdk:
+        patterns: ["AWSSDK.*"]
+      microsoft-extensions:
+        patterns: ["Microsoft.Extensions.*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
