@@ -125,12 +125,27 @@ jobs:
           merge-multiple: true
           path: dist
 
-      - name: Create release
+      - name: Publish RPMs
+        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-        run: >
-          gh release create "$GITHUB_REF_NAME"
-          --repo "$GITHUB_REPOSITORY"
-          --title "PackRat $GITHUB_REF_NAME"
-          --generate-notes
-          dist/*.rpm
+        run: |
+          # Artifacts keep their RPMS/noarch/ and SRPMS/ subdirectories.
+          shopt -s globstar nullglob
+          rpms=(dist/**/*.rpm)
+          if (( ${#rpms[@]} == 0 )); then
+            echo "::error::No RPMs were downloaded"
+            exit 1
+          fi
+          printf '%s\n' "${rpms[@]}"
+
+          # Creating a release in the GitHub UI also creates the tag that
+          # triggers this run, so the release may already exist.
+          if gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" \
+               > /dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" \
+              --clobber "${rpms[@]}"
+          else
+            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" \
+              --title "PackRat $GITHUB_REF_NAME" --generate-notes "${rpms[@]}"
+          fi
